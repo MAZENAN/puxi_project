@@ -138,8 +138,7 @@
 //我的目的是我自己生成文件名，设置目录名，我只需要拿到服务器成败的结果。失败再重传。
 accessid= 'LTAILuuzG1ZdP5Zn';
 accesskey= 'Ic8tlmJXxpUxkkBgnhdJ7DoHrXK2U5';
-host = '
-http://puxi-public.oss-cn-beijing.aliyuncs.com';
+host = 'http://puxi-public.oss-cn-beijing.aliyuncs.com';
 
 g_dirname = 'Docpdf/'//目录
 g_object_name = ''

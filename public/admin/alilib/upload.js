@@ -1,7 +1,8 @@
 
-accessid= 'LTAIxiSvIxoKdf88';
-accesskey= 'PKXiag49w6oCvQMxzIxiB1PunjDzsb';
-host = 'http://puxipublic.oss-cn-beijing.aliyuncs.com';
+accessid= 'LTAILuuzG1ZdP5Zn';
+accesskey= 'Ic8tlmJXxpUxkkBgnhdJ7DoHrXK2U5';
+host = '
+http://puxi-public.oss-cn-beijing.aliyuncs.com';
 
 g_dirname = ''
 g_object_name = ''

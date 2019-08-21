@@ -30,7 +30,7 @@
       <div class="row cl">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-xs-8">
-          <input id="username" name="username" type="text" placeholder="用户名" class="input-text size-L" value="{{old('username')}}">
+          <input id="username" name="username" type="text" placeholder="用户名" class="input-text size-L" value="{{old('username')}}" autocomplete="off">
         </div>
       </div>
       <div class="row cl">
@@ -42,7 +42,7 @@
       <div class="row cl">
          <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe63f;</i></label>
         <div class="formControls col-xs-8">
-          <input id="captcha" class="input-text size-L" type="text" placeholder="验证码"  placeholder="验证码" name="captcha" style="width:150px;">
+          <input id="captcha" class="input-text size-L" type="text" placeholder="验证码"  placeholder="验证码" name="captcha" style="width:150px;" autocomplete="off">
           <img src="{{captcha_src()}}" id="img"> <a id="change" href="javascript:;">看不清,换一张</a> </div>
       </div>
       <div class="row cl">
@@ -67,10 +67,13 @@
 <script type="text/javascript" src="{{asset('admin/static/h-ui/js/H-ui.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('admin/lib/layer/2.4/layer.js')}}"></script>
 <script type="text/javascript">
+if (window != top){
+            top.location.href = location.href;
+        }
+
   $(function(){
     $("#change").click(
         function(){
-          console.log('click')
           $("#img").attr("src","{{captcha_src()}}"+"?r="+Math.random())
         }
       )

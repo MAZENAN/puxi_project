@@ -1,0 +1,82 @@
+.clears{ clear:both;}
+.for-liucheng{width:640px;margin:30px auto; height:50px;padding:20px 0 0 0; position:relative;}
+.liulist{float:left;width:21%; height:7px; background:#ccc;}
+.liutextbox{ position:absolute;width:100%;left:0;top:10px;}
+.liutextbox .liutext{float:left;width:25%; text-align:center;}
+.liutextbox .liutext em{ display:inline-block;width:24px; height:24px;-moz-border-radius: 24px; -webkit-border-radius: 24px;border-radius:24px; background:#ccc; text-align:center; font-size:14px; line-height:24px; font-style:normal; font-weight:bold;color:#fff;}
+.liutextbox .liutext strong{ display:inline-block;height:26px; line-height:26px; font-weight:400;}
+.liulist.for-cur{ background:#77b852;}
+.liutextbox .for-cur em{ background:#77b852;}
+.liutextbox .for-cur strong{color:#77b852;}
+.forget-pwd{width:500px;margin:20px auto;}
+
+#code{
+    font-family:Arial;
+    font-style:italic;
+    font-weight:bold;
+    border:0;
+    letter-spacing:2px;
+    color:blue;
+    width: 80px;
+    height: 28px;
+    position: relative;
+    top: 10px;
+}
+.yz_ul{
+    display: flex;
+}
+.yz_ul ul li{
+    height: 30px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+.ul_2:nth-child(2) input{
+    width: 190px;
+    height: 28px;
+    border: #ccc 1px solid;
+}
+.ul_2 select{
+    width: 190px;
+    height: 30px;
+    border: #ccc 1px solid;
+}            
+#duanxin{
+    width: 100px;
+    background: #77b852;
+    border: 1px solid red;
+}
+.duanxin{
+    margin: 0 2px;
+    width: 120px;
+    height: 30px;   
+    line-height: 30px;
+    border:  1px#ddd solid;
+    background: #f1f1f1;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+}
+.subtijiao button{
+    width: 100%;
+    height: 100%;
+     background:#f60;color:#fff; font-size:14px; cursor:pointer;border: 1px solid #f60;
+}
+.subtijiao{
+  width:85px; height:32px;margin: 0 auto;
+}
+.content{
+    margin-bottom: 320px;
+}
+@media screen and (max-width:414px){
+    .for-liucheng{
+        width: 414px;
+    }
+    .content{
+        padding: 12px;
+    }
+    .forget-pwd {
+        width: 414px;
+        
+    }
+}

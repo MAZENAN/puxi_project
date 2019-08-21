@@ -28,22 +28,22 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="{{url('admin/periodicalCategory/add')}}" method="post" class="form form-horizontal" id="form-member-add">
+	<form method="post" class="form form-horizontal" id="form-category-edit">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="不超过50个字符" id="name" name="name">
+				<input type="text" class="input-text" value="{{$curCategory->name}}" placeholder="不超过50个字符" id="name" name="name">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否展示：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="status" type="radio" id="status-1" checked value="2">
+					<input type="radio" id="status-1" @if($curCategory->is_nav==2) checked @endif value="2" name="is_nav">
 					<label for="status-1">展示</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="status-2" name="status" value="1">
+					<input type="radio" id="status-2" value="1" name="is_nav" @if($curCategory->is_nav==1) checked @endif>
 					<label for="status-2">不展示</label>
 				</div>
 			</div>
@@ -52,9 +52,9 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>父分类：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select class="select" size="1" name="pid">
-					<option value="0" selected>顶级分类</option>
+					<option value="0" @if($curCategory->pid==0) selected @endif>顶级分类</option>
 					@foreach($categorys as $category)
-					<option value="{{$category['id']}}">{{str_repeat('---',$category['level'])}}{{$category['name']}}</option>
+					<option value="{{$category['id']}}" @if($curCategory->pid==$category['id']) selected @endif>{{str_repeat('---',$category['level'])}}{{$category['name']}}</option>
 					@endforeach
 				</select>
 				</span> </div>
@@ -62,7 +62,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" id="description"  rows="5" class="textarea"  placeholder="说点什么...最少输入10个字符"></textarea>
+				<textarea name="description" id="description"  rows="5" class="textarea"  placeholder="说点什么...最少输入输入500个字符"></textarea>
 				<p class="textarea-numberbar"><span class="textarea-length" id="desc-current">0</span>/500</p>
 			</div>
 		</div>
@@ -94,18 +94,34 @@ $(function(){
 		radioClass: 'iradio-blue',
 		increaseArea: '20%'
 	});
-	$("#form-member-add").validate({
+	$("#form-category-edit").validate({
 		rules:{
 			name:{
 				required:true,
 				minlength:2,
-				maxlength:50
+				maxlength:50,
+				remote: {
+					url: "/admin/check/periodicalCategory",     //后台处理程序
+					type: "post",               //数据发送方式
+					dataType: "json",           //接受数据格式
+					data: {                     //要传递的数据
+						name: function() {
+							return $("#name").val();
+						},
+						id :function() {
+							return {{$curCategory->id}};
+						},
+						_token: function() {
+							return $('input[name=_token]').val();
+						}
+					}
+				}
 			},
-			status:{
+			is_nav:{
 				required:true,
 			},
 			description:{
-				maxlength:50
+				maxlength:500
 			}
 		},
 		onkeyup:false,
@@ -114,15 +130,15 @@ $(function(){
 		submitHandler:function(form){
 				$(form).ajaxSubmit({
 				type: 'post',
-				url: "" ,
+				url: "/admin/periodicalCategory/update/{{$curCategory->id}}" ,
 				success: function(data){
 					if (data==1) {
-						layer.msg('添加分类成功',{icon:1,time:1000},function(){
+						layer.msg('更新分类成功',{icon:1,time:1000},function(){
 							var index = parent.layer.getFrameIndex(window.name);
 							parent.window.location = parent.window.location;
 						})
 					}else{
-						layer.msg('添加分类失败!',{icon:2,time:2000});
+						layer.msg('更新分类失败!',{icon:2,time:2000});
 					}
 				},
                 error: function(XmlHttpRequest, textis_nav, errorThrown){

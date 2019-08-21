@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
+	<form class="form form-horizontal" id="form-periodical-add" action="admin/periodical/add" method="post">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>期刊名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -43,7 +43,8 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
 				<select name="typestr" class="select">
-					<option value="0" selected="">选择分类</option>
+					<option value="0" selected="" disabled="">选择分类</option>
+					<option value="0" >无分类</option>
 					@foreach($categorys as $category)
 					<option value="{{$category['typestr']}}">{{str_repeat('---',$category['level'])}}{{$category['name']}}</option>
 					@endforeach
@@ -56,7 +57,8 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
 				<select name="cycle" class="select">
-					<option value="1" selected="">旬刊</option>
+					<option value="" selected="" disabled="">请选择</option>
+					<option value="1" >旬刊</option>
 					<option value="2">半月刊</option>
 					<option value="3">月刊</option>
 					<option value="4">双月刊</option>
@@ -102,13 +104,18 @@
 				<input type="text" class="input-text"  placeholder="期刊联系方邮箱号" id="email" name="email">
 			</div>
 		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">地址：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text"  placeholder="请输入地址" id="address" name="address">
+			</div>
+		</div>
 
-	<div class="row cl"> 日期范围：
-		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
-		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
-		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-2">创刊日期：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+		<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-M-d', maxDate:'#F{\'%y-%M-%d\'}' })" id="establish_at" class="input-text Wdate"  autocomplete="off" name="establish_at" >
+		</div>
 	</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">主管单位：</label>
@@ -154,18 +161,8 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">期刊描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入500个字符" datatype="*0-500" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
+				<textarea name="description" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入500个字符" datatype="*0-500" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/500</p>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">缩略图：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<div class="uploader-thum-container">
-					<div id="fileList" class="uploader-list"></div>
-					<div id="filePicker">选择期刊</div>
-					<button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
-				</div>
 			</div>
 		</div>
 		<div class="row cl">
@@ -174,7 +171,7 @@
 				<div class="uploader-list-container">
 					<div class="queueList">
 						<div id="dndArea" class="placeholder">
-							<div id="filePicker-2"></div>
+							<div id="filePicker-1"></div>
 							<p>或将照片拖到这里，只支持单张</p>
 						</div>
 					</div>
@@ -182,7 +179,7 @@
 						<div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
 						<div class="info"></div>
 						<div class="btns">
-							<div id="filePicker2"></div>
+							<div id="filePicker"></div>
 							<div class="uploadBtn">开始上传</div>
 						</div>
 					</div>
@@ -193,11 +190,11 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否上线：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="status" type="radio" id="status-1" checked value="1">
+					<input name="status" type="radio" id="status-1"  value="1">
 					<label for="status-1">不上线</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="status-2" name="status" value="2">
+					<input type="radio" id="status-2" name="status" value="2" checked>
 					<label for="status-2">上线</label>
 				</div>
 			</div>
@@ -205,9 +202,9 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				{{csrf_field()}}
-				<button onClick="article_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
-				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+				<input type="hidden" name="image" id="image">
+				<button class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="reset">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
 	</form>
@@ -227,124 +224,23 @@
 <script type="text/javascript" src="{{asset('admin/lib/jquery.validation/1.14.0/messages_zh.js')}}"></script>
 <script type="text/javascript" src="{{asset('admin/lib/webuploader/0.1.5/webuploader.min.js')}}"></script>
 <script type="text/javascript">
-function article_save(){
+function periodical_save(){
 	alert("刷新父级的时候会自动关闭弹层。")
 	window.parent.location.reload();
 }
 
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-
-	$list = $("#fileList"),
-	$btn = $("#btn-star"),
-	state = "pending",
-	uploader;
-
-	var uploader = WebUploader.create({
-		auto: true,
-		swf: 'admin/lib/webuploader/0.1.5/Uploader.swf',
-
-		// 文件接收服务端。
-		server: '{{url('admin/upload/image')}}',
-
-		// 选择文件的按钮。可选。
-		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
-		pick: '#filePicker',
-
-		// 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-		resize: false,
-		// 只允许选择期刊文件。
-		accept: {
-			title: 'Images',
-			extensions: 'gif,jpg,jpeg,bmp,png',
-			mimeTypes: 'image/*'
-		}
-	});
-	uploader.on( 'fileQueued', function( file ) {
-		var $li = $(
-			'<div id="' + file.id + '" class="item">' +
-				'<div class="pic-box"><img></div>'+
-				'<div class="info">' + file.name + '</div>' +
-				'<p class="state">等待上传...</p>'+
-			'</div>'
-		),
-		$img = $li.find('img');
-		$list.append( $li );
-
-		// 创建缩略图
-		// 如果为非期刊文件，可以不用调用此方法。
-		// thumbnailWidth x thumbnailHeight 为 100 x 100
-		uploader.makeThumb( file, function( error, src ) {
-			if ( error ) {
-				$img.replaceWith('<span>不能预览</span>');
-				return;
-			}
-
-			$img.attr( 'src', src );
-		}, thumbnailWidth, thumbnailHeight );
-	});
-	// 文件上传过程中创建进度条实时显示。
-	uploader.on( 'uploadProgress', function( file, percentage ) {
-		var $li = $( '#'+file.id ),
-			$percent = $li.find('.progress-box .sr-only');
-
-		// 避免重复创建
-		if ( !$percent.length ) {
-			$percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo( $li ).find('.sr-only');
-		}
-		$li.find(".state").text("上传中");
-		$percent.css( 'width', percentage * 100 + '%' );
-	});
-
-	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
-	uploader.on( 'uploadSuccess', function( file ) {
-		$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
-	});
-
-	// 文件上传失败，显示上传出错。
-	uploader.on( 'uploadError', function( file ) {
-		$( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
-	});
-
-	// 完成上传完了，成功或者失败，先删除进度条。
-	uploader.on( 'uploadComplete', function( file ) {
-		$( '#'+file.id ).find('.progress-box').fadeOut();
-	});
-	uploader.on('all', function (type) {
-        if (type === 'startUpload') {
-            state = 'uploading';
-        } else if (type === 'stopUpload') {
-            state = 'paused';
-        } else if (type === 'uploadFinished') {
-            state = 'done';
-        }
-
-        if (state === 'uploading') {
-            $btn.text('暂停上传');
-        } else {
-            $btn.text('开始上传');
-        }
-    });
-
-    $btn.on('click', function () {
-        if (state === 'uploading') {
-            uploader.stop();
-        } else {
-            uploader.upload();
-        }
-    });
-
-});
 
 (function( $ ){
     // 当domReady的时候开始初始化
     $(function() {
+    	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+    	var responsecode ;//上传图片的响应码
+    	var currentli;
         var $wrap = $('.uploader-list-container'),
-
             // 期刊容器
             $queue = $( '<ul class="filelist"></ul>' )
                 .appendTo( $wrap.find( '.queueList' ) ),
@@ -482,31 +378,32 @@ $(function(){
         // 实例化
         uploader = WebUploader.create({
             pick: {
-                id: '#filePicker-2',
-                label: '点击选择封面图片'
+                id: '#filePicker-1',
+                label: '点击选择封面图片',
+                multiple:false
             },
             formData: {
-                _token:$('[name=_token]').val()
+                _token:$('[name=_token]').val(),
+                'time':new Date().getTime()+Math.random()
             },
+            fileVal:'cover',
             dnd: '#dndArea',
             paste: '#uploader',
-            swf: 'lib/webuploader/0.1.5/Uploader.swf',
-            chunked: false,
-            chunkSize: 512 * 1024,
+            swf: 'admin/lib/webuploader/0.1.5/Uploader.swf',
+            chunked: true,
+            chunkSize: 1024 * 1024,//1m
             server: '{{url('admin/upload/image')}}',
-            // runtimeOrder: 'flash',
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            },
 
-            // accept: {
-            //     title: 'Images',
-            //     extensions: 'gif,jpg,jpeg,bmp,png',
-            //     mimeTypes: 'image/*'
-            // },
-
-            // 禁掉全局的拖拽功能。这样不会出现期刊拖进页面的时候，把期刊打开。
+            // 禁掉全局的拖拽功能。这样不会出现期刊拖进页面的时候，把期刊图片打开。
             disableGlobalDnd: true,
-            fileNumLimit: 300,
+            fileNumLimit: 1,
             fileSizeLimit: 200 * 1024 * 1024,    // 200 M
-            fileSingleSizeLimit: 50 * 1024 * 1024    // 50 M
+            fileSingleSizeLimit:  20* 1024 * 1024    // 20 M
         });
 
         // 拖拽时不接受 js, txt 文件。
@@ -519,7 +416,7 @@ $(function(){
 
             for ( ; i < len; i++ ) {
                 // 如果在列表里面
-                if ( ~unAllowed.indexOf( items[ i ].type ) ) {
+                if ( ~unAllowed.indexOf( items[i].type ) ) {
                     denied = true;
                     break;
                 }
@@ -529,10 +426,10 @@ $(function(){
         });
 
         uploader.on('dialogOpen', function() {
-            console.log('here');
-        });
 
-        // uploader.on('filesQueued', function() {
+        });
+	//当一批文件添加进队列以后触发  {File}数组
+        // uploader.on('filesQueued', function(files) {
         //     uploader.sort(function( a, b ) {
         //         if ( a.name < b.name )
         //           return -1;
@@ -542,18 +439,18 @@ $(function(){
         //     });
         // });
 
-        // 添加“添加文件”的按钮，
-        uploader.addButton({
-            id: '#filePicker2',
-            label: '继续添加'
-        });
+        //添加“添加文件”的按钮，
+        // uploader.addButton({
+        //     id: '#filePicker',
+        //     label: '继续添加'
+        // });
 
         uploader.on('ready', function() {
             window.uploader = uploader;
         });
 
         // 当有文件添加进来时执行，负责view的创建
-        function addFile( file ) {
+        function addFile(file) {
             var $li = $( '<li id="' + file.id + '">' +
                     '<p class="title">' + file.name + '</p>' +
                     '<p class="imgWrap"></p>'+
@@ -632,8 +529,7 @@ $(function(){
 
                 // 成功
                 if ( cur === 'error' || cur === 'invalid' ) {
-                    console.log( file.statusText );
-                    showError( file.statusText );
+                    showError(file.statusText );
                     percentages[ file.id ][ 1 ] = 1;
                 } else if ( cur === 'interrupt' ) {
                     showError( 'interrupt' );
@@ -643,7 +539,13 @@ $(function(){
                     $info.remove();
                     $prgress.css('display', 'block');
                 } else if ( cur === 'complete' ) {
-                    $li.append( '<span class="success"></span>' );
+
+                	// if (responsecode==1) {
+                	// 	$li.append( '<span class="success"></span>' );
+                	// }else{
+                	// 	$li.append('<p class="error">上传失败,请重试</p>')
+                	// }
+                	currentli = $li;
                 }
 
                 $li.removeClass( 'state-' + prev ).addClass( 'state-' + cur );
@@ -730,20 +632,19 @@ $(function(){
                         WebUploader.formatSize( fileSize ) + '。';
             } else if ( state === 'confirm' ) {
                 stats = uploader.getStats();
-                if ( stats.uploadFailNum ) {
-                    text = '已成功上传' + stats.successNum+ '张照片至XX相册，'+
-                        stats.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败期刊或<a class="ignore" href="#">忽略</a>'
+                if ( stats.uploadFailNum ||responsecode==0) {
+	                  	layer.msg('图片上传失败',{icon:2,time:1000})
+                    	$upload.text( '或选择重新上传' );
+                        state = 'done';
+                        //location.reload();
+                    text = '照片上传失败，<a class="retry" href="javascript:void(0);">重新上传</a>失败期刊或<a class="ignore" href="#">忽略</a>'
                 }
 
-            } else {
-                stats = uploader.getStats();
-                text = '共' + fileCount + '张（' +
-                        WebUploader.formatSize( fileSize )  +
-                        '），已上传' + stats.successNum + '张';
-
-                if ( stats.uploadFailNum ) {
-                    text += '，失败' + stats.uploadFailNum + '张';
-                }
+            } else if(state=='finish'){
+            	if (responsecode==1) {
+	    		    stats = uploader.getStats();
+	                text = '照片上传成功'
+            	}
             }
 
             $info.html( text );
@@ -770,14 +671,14 @@ $(function(){
 
                 case 'ready':
                     $placeHolder.addClass( 'element-invisible' );
-                    $( '#filePicker2' ).removeClass( 'element-invisible');
+                    $( '#filePicker' ).removeClass( 'element-invisible');
                     $queue.show();
                     $statusBar.removeClass('element-invisible');
                     uploader.refresh();
                     break;
 
                 case 'uploading':
-                    $( '#filePicker2' ).addClass( 'element-invisible' );
+                    $( '#filePicker' ).addClass( 'element-invisible' );
                     $progress.show();
                     $upload.text( '暂停上传' );
                     break;
@@ -789,21 +690,32 @@ $(function(){
 
                 case 'confirm':
                     $progress.hide();
-                    $( '#filePicker2' ).removeClass( 'element-invisible' );
-                    $upload.text( '开始上传' );
+                    $('#filePicker').removeClass('element-invisible');
+
+                   $upload.text( '上传结束' );
+                   $upload.addClass('disabled')
 
                     stats = uploader.getStats();
-                    if ( stats.successNum && !stats.uploadFailNum ) {
-                        setState( 'finish' );
+                    if (stats.successNum && !stats.uploadFailNum && responsecode==1) {
+                        setState('finish');
                         return;
                     }
+
+
+                    // if (stats.successNum ===1) {
+                    //     setState('finish');
+                    //     return;
+                    // }
                     break;
                 case 'finish':
-                    stats = uploader.getStats();
-                    if ( stats.successNum ) {
-                        alert( '上传成功' );
+                    //stats = uploader.getStats();
+                    if (responsecode==1) {
+                    	layer.msg('图片上传成功',{icon:1,time:1000})
+                    	$upload.text( '上传结束' );
                     } else {
                         // 没有成功的期刊，重设
+                        layer.msg('图片上传失败',{icon:2,time:1000})
+                    	$upload.text( '重新上传' );
                         state = 'done';
                         location.reload();
                     }
@@ -812,7 +724,7 @@ $(function(){
 
             updateStatus();
         }
-
+		//上传过程中触发，携带上传进度
         uploader.onUploadProgress = function( file, percentage ) {
             var $li = $('#'+file.id),
                 $percent = $li.find('.progress span');
@@ -821,7 +733,7 @@ $(function(){
             percentages[ file.id ][ 1 ] = percentage;
             updateTotalProgress();
         };
-
+		//当文件被加入队列以后触发  File对象
         uploader.onFileQueued = function( file ) {
             fileCount++;
             fileSize += file.size;
@@ -831,11 +743,11 @@ $(function(){
                 $statusBar.show();
             }
 
-            addFile( file );
-            setState( 'ready' );
+            addFile(file);
+            setState('ready');
             updateTotalProgress();
         };
-
+        //当文件被移除队列后触发
         uploader.onFileDequeued = function( file ) {
             fileCount--;
             fileSize -= file.size;
@@ -849,27 +761,64 @@ $(function(){
 
         };
 
-        uploader.on( 'all', function( type ) {
+        uploader.on( 'all', function( type,file, response) {
             var stats;
             switch( type ) {
+            	//当所有文件上传结束时触
                 case 'uploadFinished':
                     setState( 'confirm' );
                     break;
-
+                //当开始上传流程时触发
                 case 'startUpload':
                     setState( 'uploading' );
                     break;
-
+                //当开始上传流程暂停时触发
                 case 'stopUpload':
                     setState( 'paused' );
                     break;
-
+                //
             }
         });
-
+//图片校验
         uploader.onError = function( code ) {
-            alert( 'Eroor: ' + code );
+        	switch (code) {
+        		case 'Q_EXCEED_NUM_LIMIT':
+        			code='超出可选数量'
+        			break;
+        		case 'Q_EXCEED_SIZE_LIMIT':
+        			code='文件超出规范大小'
+        		case 'Q_TYPE_DENIED':
+        			code='文件类型错误'
+        		default:
+        			code = '该文件不支持,请重试'
+        			break;
+        	}
+            layer.alert(code,{icon:5})
         };
+
+
+        //当文件上传出错时触发
+        // uploader.on('uploadError',function(file,reason){
+
+        // })
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+		uploader.on('uploadSuccess', function( file,response ) {
+        if (response.code==1) {
+        	responsecode =1;
+        	$('#image').val(response.path)
+        	currentli.append('<span class="success"></span>')
+        }else{
+    		responsecode=0;
+    		currentli.append('<p class="error">上传失败,请重试</p>')
+                }
+
+		});
+
+		// 文件上传失败，显示上传出错。
+		uploader.on( 'uploadError', function( file ) {
+		$( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
+		});
 
         $upload.on('click', function() {
             if ( $(this).hasClass( 'disabled' ) ) {
@@ -885,18 +834,52 @@ $(function(){
             }
         });
 
+
+
         $info.on( 'click', '.retry', function() {
             uploader.retry();
         } );
 
         $info.on( 'click', '.ignore', function() {
-            alert( 'todo' );
+            layer.alert('当前版本请重新上传')
         } );
 
         $upload.addClass( 'state-' + state );
         updateTotalProgress();
     });
 
+
+		$("#form-periodical-add").validate({
+		rules:{
+			title:{
+				required:true,
+				minlength:2,
+				maxlength:50
+			}
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+				$(form).ajaxSubmit({
+				type: 'post',
+				url: "" ,
+				success: function(data){
+					if (data==1) {
+						layer.msg('添加期刊成功',{icon:1,time:1000},function(){
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.window.location = parent.window.location;
+						})
+					}else{
+						layer.msg('添加期刊失败!',{icon:2,time:2000});
+					}
+				},
+                error: function(XmlHttpRequest, textis_nav, errorThrown){
+					layer.msg('请重新尝试!',{icon:2,time:2000});
+				}
+			});
+		}
+	});
 })( jQuery );
 </script>
 </body>

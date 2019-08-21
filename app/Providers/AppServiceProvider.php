@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Model\Site;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $site = Site::find(1);
+        view()->share('site',$site);
+
     }
 
     /**

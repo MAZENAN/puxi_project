@@ -31,21 +31,16 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 期刊管理 <span class="c-gray en">&gt;</span> 分类列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="text-c">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入分类名称" id="" name="">
-		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜分类</button>
-	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="category_add('添加分类','{{url('admin/periodicalCategory/add')}}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加分类</a></span> <span class="r">共有数据：<strong>{{$categorys->total()}}</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="category_add('添加分类','{{url('admin/periodicalCategory/add')}}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加分类</a></span> <span class="r">共有数据：<strong>{{$total}}</strong> 条</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
 				<th scope="col" colspan="9">分类列表</th>
 			</tr>
 			<tr class="text-c">
-				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="30">ID</th>
-				<th width="150">分类名
-				</th>
+				<th width="150">分类名</th>
+				<th width="150">排序码</th>
 				<th width="200">分类描述</th>
 				<th width="20">是否已启用</th>
 				<th width="50">操作</th>
@@ -53,18 +48,17 @@
 		</thead>
 		<tbody>
 	@foreach($categorys as $category)
-				<tr class="text-c">
-				<td><input type="checkbox" value="1" name=""></td>
+				<tr>
 				<td>{{$category->id}}</td>
-				<td>{{$category->name}}</td>
+					<td><span>{{str_repeat('--',$category->level-1)}}{{$category->level}}级分类</span><form id="form_{{$category->id}}" action="/admin/periodicalCategory/update/{{$category->id}}"><input name="name" value="{{$category->name}}" id="name_{{$category->id}}" class="input-text size-S" style="width: 200px;"><a class="btn btn-success-outline size-S radius" href="javascript:;" onclick="name_update({{$category->id}})">更新</a></form></td>
+				<td><form id="form_id_{{$category->id}}" action="/admin/periodicalCategory/update/{{$category->id}}"><input name="sortcode" id="id_{{$category->id}}" value="{{$category->sortcode}}" class="input-text radius" style="width: 200px;"><a class="btn btn-success-outline size-S radius" href="javascript:;" onclick="sortcode_update({{$category->id}})">更新</a></form></td>
 				<td>{{$category->description}}</td>
 				<td class="td-status"><span class="label @if($category->status==2) label-success @else @endif radius">{{$category->getStatus()}}</span></td>
-				<td class="td-manage"><a style="text-decoration:none" onClick="@if($category->status==2) category_stop(this,{{$category->id}}) @else category_start(this,{{$category->id}}) @endif " href="javascript:;" title="@if($category->status==2)停用 @else 启用 @endif"><i class="Hui-iconfont">@if($category->status==2) &#xe631; @else &#xe615; @endif</i></a> <a title="编辑" href="javascript:;" onclick="admin_edit('分类编辑','{{url('admin/periodicalCategory/edit')}}',{{$category->id}},'800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				<td class="td-manage"><a style="text-decoration:none" onClick="@if($category->status==2) category_stop(this,{{$category->id}}) @else category_start(this,{{$category->id}}) @endif " href="javascript:;" title="@if($category->status==2)停用 @else 启用 @endif"><i class="Hui-iconfont">@if($category->status==2) &#xe631; @else &#xe615; @endif</i></a> <a title="编辑" href="javascript:;" onclick="admin_edit('分类编辑','{{url('admin/periodicalCategory/edit')}}',{{$category->id}},'800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_del(this,{{$category->id}})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 			</tr>
 	@endforeach
 		</tbody>
 	</table>
-	{{$categorys->appends($_GET)->links()}}
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="{{asset('admin/lib/jquery/1.9.1/jquery.min.js')}}"></script>
@@ -96,14 +90,20 @@ function admin_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: '',
+			url: '/admin/periodicalCategory/delete/'+id,
 			dataType: 'json',
+			data:'_token={{csrf_token()}}',
 			success: function(data){
-				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
+				if (data.code==1){
+					$(obj).parents("tr").remove();
+					layer.msg(data.message,{icon:1,time:1000});
+				} else{
+					layer.msg(data.message,{icon:5,time:1000});
+				}
+
 			},
 			error:function(data) {
-				console.log(data.msg);
+				layer.msg('操作失败，请重试!',{icon:5,time:1000});
 			},
 		});
 	});
@@ -111,31 +111,80 @@ function admin_del(obj,id){
 
 /*分类-编辑*/
 function admin_edit(title,url,id,w,h){
-	layer_show(title,url+'?id='+id,w,h);
+	layer_show(title,url+'/'+id,w,h);
 }
 /*分类-停用*/
 function category_stop(obj,id){
+
 	layer.confirm('确认要停用吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
+		$.ajax({
+			url:'/admin/periodicalCategory/stop/'+id,
+			type:'post',
+			data:'_token={{csrf_token()}}',
+			success:function(data){
+				if(data==1){
+					$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_start(this,'+id+')" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+					$(obj).remove();
+					layer.msg('已停用!',{icon: 5,time:1000});
+				}else{
+					layer.msg('操作失败!',{icon: 5,time:1000});
+				}
+			},
+			error:function (data) {
+				layer.msg('操作失败!',{icon: 5,time:1000});
+			}
+		})
 
-		$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_start(this,id)" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
-		$(obj).remove();
-		layer.msg('已停用!',{icon: 5,time:1000});
 	});
 }
 
 /*分类-启用*/
 function category_start(obj,id){
+
 	layer.confirm('确认要启用吗？',function(index){
 		//此处请求后台程序，下方是成功后的前台处理……
+		$.ajax({
+			url:'/admin/periodicalCategory/start/'+id,
+			type:'post',
+			data:'_token={{csrf_token()}}',
+			success:function(data){
+				if(data==1){
+					$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_stop(this,'+id+')" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用!',{icon: 1,time:1000});
+				}else{
+					layer.msg('操作失败!',{icon: 5,time:1000});
+				}
+			},
+			error:function (data) {
+				layer.msg('操作失败!',{icon: 5,time:1000});
+			}
+		})
 
-
-		$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_stop(this,id)" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-		$(obj).remove();
-		layer.msg('已启用!', {icon: 6,time:1000});
 	});
+}
+
+/*更新分类名*/
+function name_update(id){
+	var name = $('#name_'+id).val().trim()
+	if (name.length<=0 || name.length>50){
+		layer.msg('分类名不符合要求',{icon:5,time:1000});
+	}else {
+		$('#form_'+id).submit()
+		// window.location = window.location
+	}
+}
+/*更新排序码*/
+function sortcode_update(id){
+	var code = $('#id_'+id).val().trim()
+	if (!/[0-9]+/.test(code)){
+		layer.msg('排序码不符合要求',{icon:5,time:1000});
+	}else {
+		$('#form_id_'+id).submit()
+	}
 }
 </script>
 </body>

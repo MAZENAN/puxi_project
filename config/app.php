@@ -78,6 +78,7 @@ return [
 	*/
 
 	'locale' => 'zh-CN',
+    'lang'=>'zh-CN',
 
 	/*
 		    |--------------------------------------------------------------------------
@@ -179,6 +180,9 @@ return [
 		App\Providers\RouteServiceProvider::class,
 		Mews\Captcha\CaptchaServiceProvider::class,
 		Overtrue\LaravelPinyin\ServiceProvider::class,
+		Laravel\Scout\ScoutServiceProvider::class,
+		ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
+        AetherUpload\AetherUploadServiceProvider::class
 	],
 
 	/*

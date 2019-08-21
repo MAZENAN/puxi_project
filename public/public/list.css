@@ -1,0 +1,187 @@
+body{
+    margin:0;
+	font-family:Arial;
+	font-size:12px;
+	line-height:23px;
+}
+body, div, dl, dt, dd, ul, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, blockquote {
+	margin: 0;
+	padding: 0;
+	margin-bottom: 10px;
+}
+
+#topnav{
+	width:100%;
+	color: #D4D4D4;
+	height: 50px;
+	overflow:hidden;
+	border-bottom: 1px dashed #D4D4D4;
+	line-height:30px;
+}
+.db{
+	width:880px;
+	margin:0 auto;
+	  margin-top: 15px;
+}
+.db .top-nav-info a{
+	margin-left:15px;
+}
+.db .top-nav-items a{
+	margin-right:25px;
+}
+
+#wrapper{
+	width: 875px;
+	margin:0 auto;
+}
+
+#content{
+    width: 100%;
+}
+#content .article{
+	width: 875px;
+}
+#content .aside{
+	width:270px;
+}
+
+#footer{
+	text-align:center;
+}
+
+
+
+
+h1{
+	font-family: "黑体";
+	font-size:20px;
+	font-weight: normal;
+	padding:0;
+	margin:0;
+}
+
+table.booklist{
+	width: 104%;
+	line-height:25px;
+	margin-bottom: 20px;
+}
+tr.category{
+	font-size:14px;
+	font-family: "黑体";
+	font-weight: normal;
+	color:#494949;
+	line-height:23px;
+}
+td.title{
+	width:30%;
+	padding-left:20px;
+	overflow:hidden;
+	line-height:23px;
+}
+td.author{
+	width:30%;
+	overflow:hidden;
+	line-height:23px;
+}
+td.source{
+	width:40%;
+	overflow:hidden;
+	line-height:23px;
+}
+td.time{
+    width:10%;
+}
+
+#myad{
+	float:left;
+	margin:0;
+}
+
+/*读者杂志小列表样式*/
+#smalllist{
+	width:100%;
+	overflow:hidden;
+}
+#smalllist .category{
+	font-size:14px;
+	font-family: "黑体";
+}
+#smalllist .rightlist{
+    margin: 0 0 0 10px;
+}
+#smalllist div{
+    cursor: pointer;
+    padding-left: 10px;
+}
+#smalllist .closelist{
+    background: url(../Images/plus.gif) left 6px no-repeat;
+}
+#smalllist .openlist{
+    background: url(../Images/minus.gif) left 6px no-repeat;
+}
+
+
+
+
+
+/*公用样式*/
+.clear{
+	clear:both;
+}
+.left{
+}
+.right{
+	float:right;
+}
+.center{
+	text-align:center;
+}
+.none{
+	display:none;
+}
+.block{
+	display:block;
+}
+.tcright{
+	text-align:center;
+}
+.mb20{
+}
+.mt20{
+	margin-top:20px;
+}
+.f12{
+	font-size:14px;
+}
+.f14{
+	font-size:14px;
+}
+.title{
+	color:#494949;
+}
+strong{
+	font-size:14px;
+	font-family: "黑体";
+}
+a,a:visited{
+	color:#369;
+	text-decoration:none;
+}
+a:hover{
+	color:#c30!important;
+	text-decoration:none;
+}
+a img{
+	border:none;
+}
+img{
+	padding:2px;
+	border:1px solid #D4D4D4;
+}
+table{
+	border-collapse: collapse;
+}
+#content > div.article.left > h2.new2 > a {color: red;}
+h1.tcright.title a {
+    color: #c30;
+}

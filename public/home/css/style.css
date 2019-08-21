@@ -1,0 +1,43 @@
+.v{float:right;width:14px;height:14px;overflow:hidden;background:url(images/vicon.png) no-repeat;display:inline-block;margin-top:-5px;margin-bottom:-5px;}
+.v01{background-position:0 0;}
+.v02{background-position:0 -16px;;}
+.vtitle{height:35px;background:#fbede0;line-height:35px;border:1px solid #ccb6a9;margin-top:-1px;padding-left:20px;font-size:15px;color:#4d4d4d;font-family:"\5FAE\8F6F\96C5\9ED1";cursor:pointer;}
+.vtitle em{margin:10px 10px 0 0;}
+.vconlist{
+  display: flex;
+  flex-wrap: wrap;
+  background:#9cc;
+  width: 268px;
+}
+.vconlist li a{height:30px;line-height:30px;padding-left:30px;display:block;font-size:14px;color:#866f67;font-family:"\5FAE\8F6F\96C5\9ED1";}
+
+.sfq_box{
+  width: 268px;
+  margin: 36px 0 0 32px;
+}
+.ul_li_a{
+  width: 32%;
+ 
+}
+.title_vcon{
+  background: #fff;
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  width: 65%;
+  padding: 10px;
+}
+.title_vcon li{
+  margin: 19px 5px;
+  padding: 13px;
+  border-bottom: 1px solid #EAECF2;
+}
+.title_vcon li a{
+  font-size: 16px;
+  color: cadetblue;
+  padding-left: 0;
+}
+.title_vcon li p{
+  font-size: 12px;
+  
+}

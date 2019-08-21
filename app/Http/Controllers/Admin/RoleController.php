@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\Admin\Auth;
-use App\Model\Admin\Role;
+use App\Model\Auth;
+use App\Model\Role;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller {
@@ -29,4 +29,15 @@ class RoleController extends Controller {
 			return view('admin.role.assign', compact('top', 'cat', 'ids'));
 		}}
 
+	public function add(Request $request) {
+	    if ($request->isMethod('post')){
+	        $res = Role::create($request->all());
+	        return $res ? '1' : '0';
+        }
+		return view('admin.role.add');
+	}
+
+	public function edit() {
+		return view('admin.role.edit');
+	}
 }

@@ -21,7 +21,7 @@ class CheckRbac {
 			$str = strtolower($auth->role->auth_ac . ',IndexController@index,' . 'IndexController@welcome)');
 			$ac = strtolower(substr(strrchr($route, '\\'), 1));
 			if (strpos($str, $ac) === false) {
-				exit('<h1>您没有权限</h1>');
+				exit('<center><h1>您没有权限</h1></center>');
 			}
 		}
 

@@ -42,7 +42,7 @@ class JournalController extends Controller {
                 $periodicals->where('title','=',$journalKey);
             }
         }
-		$periodicals = $periodicals->paginate(4);
+		$periodicals = $periodicals->paginate(10);
 		return view('home/journal/index', compact('menus', 'periodicals','pos','pkuCounts','cstpcdCounts','cssciCounts','cscdCounts'));
 	}
 

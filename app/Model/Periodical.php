@@ -100,6 +100,10 @@ class Periodical extends Model {
             unset($data['cn']);
         }
 
+        if (!$data['image']) {
+            unset($data['image']);
+        }
+
         DB::beginTransaction();
         try {
             $res1 = self::find($data['id'])->update($data);
